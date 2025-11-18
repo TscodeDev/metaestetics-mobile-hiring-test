@@ -8,7 +8,7 @@ export interface InputProps {
   placeholder?: string;
   value: string;
   onChangeText: (text: string) => void;
-  onBlur?: () => void;
+  onBlur?: (e?: any) => void;
   error?: string;
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
@@ -72,9 +72,9 @@ export const Input: React.FC<InputProps> = ({
           placeholderTextColor="#9CA3AF"
           value={value}
           onChangeText={onChangeText}
-          onBlur={() => {
+          onBlur={(e) => {
             setIsFocused(false);
-            onBlur?.();
+            onBlur?.(e);
           }}
           onFocus={() => setIsFocused(true)}
           secureTextEntry={secureTextEntry && !isPasswordVisible}

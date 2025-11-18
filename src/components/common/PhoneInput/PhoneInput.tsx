@@ -6,7 +6,7 @@ import { styles } from './PhoneInput.styles';
 
 export interface PhoneInputProps {
   label?: string;
-  value: string;
+  value?: string;
   onChangeText: (phone: string) => void;
   onChangeCountryCode: (code: string) => void;
   countryCode: string;
@@ -30,10 +30,20 @@ export const PhoneInputComponent: React.FC<PhoneInputProps> = ({
       )}
       <PhoneInput
         defaultCode="US"
-        value={value}
-        onChangeText={onChangeText}
-        onChangeFormattedText={(text, code) => {
-          onChangeCountryCode(`+${code.callingCode[0]}`);
+        defaultValue={value}
+        onChangeText={(text: string) => {
+          // Store only digits so validation (10 digits) works and input stays editable
+          const digitsOnly = text.replace(/\D/g, '');
+          onChangeText(digitsOnly);
+        }}
+        onChangeCountry={(country: any) => {
+          if (
+            country &&
+            Array.isArray(country.callingCode) &&
+            country.callingCode.length > 0
+          ) {
+            onChangeCountryCode(`+${country.callingCode[0]}`);
+          }
         }}
         containerStyle={styles.phoneContainer}
         textContainerStyle={styles.textContainer}

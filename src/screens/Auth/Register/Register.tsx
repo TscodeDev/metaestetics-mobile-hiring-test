@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Typography, Button } from '@components/common';
+import { Typography } from '@components/common';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { registerThunk } from '@store/auth/authThunks';
+import { clearError } from '@store/auth/authSlice';
 import { RegisterData } from '@types';
 import { AuthStackParamList } from '@types';
 import { styles } from './Register.styles';
@@ -20,13 +21,19 @@ const TOTAL_STEPS = 4;
 export const Register: React.FC = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
   const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector(state => state.auth);
+  const { isLoading, error } = useAppSelector(state => state.auth);
   
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Partial<RegisterData>>({});
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
   const handleDataChange = (data: Partial<RegisterData>) => {
-    setFormData(prev => ({ ...prev, ...data }));
+    setFormData((prev: Partial<RegisterData>) => ({ ...prev, ...data }));
   };
 
   const handleNext = () => {
@@ -82,6 +89,7 @@ export const Register: React.FC = () => {
             onPrevious={handlePrevious}
             onSubmit={handleSubmit}
             isLoading={isLoading}
+            error={error ?? undefined}
           />
         );
       default:

@@ -172,8 +172,8 @@ There are bugs in the codebase. Find and fix them.
 
 ### PR Guidelines
 
-- **Title:** `[Your Name] - Hiring Test Submission`
-- **Description:** Include video link and explanation
+- **Title:** `[Suffyan Ahmed] - Hiring Test Submission`
+- **Description:** `https://somup.com/cTXFQr9PE0`
 - **Commits:** Make meaningful commits (not just one giant commit)
 - **Code Quality:** Follow existing code style and patterns
 
